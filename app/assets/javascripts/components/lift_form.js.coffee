@@ -1,3 +1,5 @@
+coefficients = { 1: 1, 2: .943, 3: .906, 4: .881, 5: .851, 6: .831, 7: .807, 8: .786, 9: .765, 10: .744
+}
 @LiftForm = React.createClass
   getInitialState: ->
     date: ''
@@ -6,12 +8,9 @@
     weightlifted: ''
     repsperformed: ''
     onerm: 0
-    coefficients: {
-      1: 1, 2: .943, 3: .906, 4: .881, 5: .851, 6: .831, 7: .807, 8: .786, 9: .765, 10: .744
-    }
   calculateOneRm: ->
     if @state.weightlifted and @state.repsperformed
-      @state.onerm = @state.weightlifted / @state.coefficients[@state.repsperformed]
+      @state.onerm = @state.weightlifted / coefficients[@state.repsperformed]
     else
       0
   handleValueChange: (e) ->
@@ -41,17 +40,17 @@
           name: 'date'
           value: @state.date
           onChange: @handleValueChange
+      React.DOM.div
+        className: 'form-group'    
         React.DOM.input
           type: 'text'
           className: 'form-control'
           placeholder: 'liftname'
           name: 'liftname'
           value: @state.liftname
-          onChange: @handleValueChange
-        React.DOM.a
-          className: 'btn btn-primary'
-          onClick: @toggleUnit
-          'Metric = ' + @state.ismetric.toString()
+          onChange: @handleValueChange 
+      React.DOM.div
+        className: 'form-group'  
         React.DOM.input
           type: 'number'
           className: 'form-control'
@@ -59,6 +58,8 @@
           name: 'weightlifted'
           value: @state.weightlifted
           onChange: @handleValueChange
+      React.DOM.div
+        className: 'form-group'
         React.DOM.input
           type: 'number'
           min: 1
@@ -68,10 +69,14 @@
           name: 'repsperformed'
           value: @state.repsperformed
           onChange: @handleValueChange
-        React.DOM.button
-          type: 'submit'
-          className: 'btn btn-primary'
-          disabled: !@valid()
-          'Create Lift'
-        React.createElement OneRmBox, onerm: @calculateOneRm()
+      React.DOM.a
+        className: 'btn btn-primary'
+        onClick: @toggleUnit
+        'Metric = ' + @state.ismetric.toString()          
+      React.DOM.button
+        type: 'submit'
+        className: 'btn btn-primary'
+        disabled: !@valid()
+        'Create Lift'
+      React.createElement OneRmBox, onerm: @calculateOneRm()
 
